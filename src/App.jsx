@@ -7,9 +7,13 @@ export const App = () => {
   const [data, setData] = useLocalStorage('listadoecomprado', []);
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('Comprar');
-  const [updateMode, setUpdateMode] = useState(false);
+  const [updateMode, setUpdateMode] = useState(true);
+  const [updateData, setUpdateData] = useState([]);
   const [updateInput, setUpdateInput] = useState('');
   const [updateStatus, setUpdateStatus] = useState('');
+  console.log(updateData[0]?.text);
+
+  // console.log(updateInput, updateStatus);
 
   function handleAddProduct() {
     setData(current => [...current, { text: input, status: status, id: uuidv4() }]);
@@ -23,10 +27,10 @@ export const App = () => {
   }
 
   function handleUpdateProduct(id) {
-    const newData = data.filter(item => item.id === id);
-    setUpdateInput(newData?.text);
-    setUpdateStatus(newData?.status);
-    setUpdateMode(current => !current);
+    // {!updateMode && setUpdateMode(true)};
+    const newData = data?.filter(item => item.id === id);
+    setUpdateData(newData)
+    
   }
   return (
     <div className="App">
@@ -34,16 +38,16 @@ export const App = () => {
         {
           updateMode ?
           <>
-            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
-            <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+            <input type="text" value={updateData[0]?.text} onChange={(e) => setInput(e.target.value)} />
+            <select name="status" id="status" value={updateData[0]?.status} onChange={(e) => setStatus(e.target.value)}>
               <option value="Comprar">Comprar</option>
               <option value="Comprado">Comprado</option>
             </select>
             <button onClick={() => handleAddProduct()}>Atualizar</button>
           </> :
           <>
-            <input type="text" value={updateInput} onChange={(e) => setUpdateInput(e.target.value)} />
-            <select name="status" id="status" value={updateStatus} onChange={(e) => setUpdateStatus(e.target.value)}>
+            <input type="text" value={updateData[0]?.text} onChange={(e) => setUpdateInput(e.target.value)} />
+            <select name="status" id="status" value={updateData[0]?.status} onChange={(e) => setUpdateStatus(e.target.value)}>
               <option value="Comprar">Comprar</option>
               <option value="Comprado">Comprado</option>
             </select>
