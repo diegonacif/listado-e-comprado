@@ -8,6 +8,8 @@ export const App = () => {
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('Comprar');
   const [updateMode, setUpdateMode] = useState(false);
+  const [updateInput, setUpdateInput] = useState('');
+  const [updateStatus, setUpdateStatus] = useState('');
 
   function handleAddProduct() {
     setData(current => [...current, { text: input, status: status, id: uuidv4() }]);
@@ -21,7 +23,9 @@ export const App = () => {
   }
 
   function handleUpdateProduct(id) {
-    const newData = data.filter(item => item.id !== id);
+    const newData = data.filter(item => item.id === id);
+    setUpdateInput(newData?.text);
+    setUpdateStatus(newData?.status);
     setUpdateMode(current => !current);
   }
   return (
@@ -38,8 +42,8 @@ export const App = () => {
             <button onClick={() => handleAddProduct()}>Atualizar</button>
           </> :
           <>
-            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
-            <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+            <input type="text" value={updateInput} onChange={(e) => setUpdateInput(e.target.value)} />
+            <select name="status" id="status" value={updateStatus} onChange={(e) => setUpdateStatus(e.target.value)}>
               <option value="Comprar">Comprar</option>
               <option value="Comprado">Comprado</option>
             </select>
