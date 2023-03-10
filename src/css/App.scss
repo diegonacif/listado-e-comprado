@@ -6,4 +6,16 @@
 
 .App {
   padding: 1rem;
+
+  section {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+
+    .category-wrapper {
+      .category-column {
+        display: flex;
+        gap: 1rem;
+      }
+    }
+  }
 }

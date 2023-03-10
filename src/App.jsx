@@ -23,16 +23,40 @@ export const App = () => {
         <option value="Comprado">Comprado</option>
       </select>
       <button onClick={() => handleAddProduct()}>Adicionar</button>
-      {
-        data.map((data) => {
-          return (
-            <div key={data.id}>
-              <span>{data.text}</span>
-              <span>{data.status}</span>
-            </div>
-          )
-        })
-      }
+      <section>
+        <div className="category-wrapper">
+          {
+            data.map((data) => {
+              if(data.status === 'Comprar') {
+                return (
+                  <div key={data.id} className="category-column">
+                    <span>{data.text}</span>
+                    <span>{data.status}</span>
+                  </div>
+                )
+              } else {
+                return;
+              }
+            })
+          }
+        </div>
+        <div className="category-wrapper">
+          {
+            data.map((data) => {
+              if(data.status === 'Comprado') {
+                return (
+                  <div key={data.id} className="category-column">
+                    <span>{data.text}</span>
+                    <span>{data.status}</span>
+                  </div>
+                )
+              } else {
+                return;
+              }
+            })
+          }
+        </div>
+      </section>
     </div>
   )
 }
