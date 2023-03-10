@@ -8,7 +8,7 @@
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  background-color: #f0f0f0;
+  background-color: #1f1f1f;
   width: 100%;
   min-height: 100vh;
 
@@ -38,7 +38,8 @@
         gap: 1rem;
         padding: 0.5rem 1rem;
         border-radius: 12px;
-        background-color: bisque;
+        background-color: rgb(53, 53, 53);
+        color: white;
 
         &:not(:first-child) {
           margin-top: 0.5rem;

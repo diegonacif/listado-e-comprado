@@ -1,12 +1,13 @@
 import { useState } from 'react';
-import { v4 as uuidv4 } from 'uuid';
 import { useLocalStorage } from './hooks/useLocalStorage';
+import { v4 as uuidv4 } from 'uuid';
 import './css/App.scss';
 
 export const App = () => {
   const [data, setData] = useLocalStorage('listadoecomprado', []);
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('Comprar');
+  const [updateMode, setUpdateMode] = useState(false);
 
   function handleAddProduct() {
     setData(current => [...current, { text: input, status: status, id: uuidv4() }]);
@@ -18,15 +19,33 @@ export const App = () => {
     const newData = data.filter(item => item.id !== id);
     setData(newData);
   }
+
+  function handleUpdateProduct(id) {
+    const newData = data.filter(item => item.id !== id);
+    setUpdateMode(current => !current);
+  }
   return (
     <div className="App">
       <header>
-        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
-        <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
-          <option value="Comprar">Comprar</option>
-          <option value="Comprado">Comprado</option>
-        </select>
-        <button onClick={() => handleAddProduct()}>Adicionar</button>
+        {
+          updateMode ?
+          <>
+            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+            <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+              <option value="Comprar">Comprar</option>
+              <option value="Comprado">Comprado</option>
+            </select>
+            <button onClick={() => handleAddProduct()}>Atualizar</button>
+          </> :
+          <>
+            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+            <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+              <option value="Comprar">Comprar</option>
+              <option value="Comprado">Comprado</option>
+            </select>
+            <button onClick={() => handleAddProduct()}>Adicionar</button>
+          </>
+        }
       </header>
       <section>
         <div className="category-wrapper">
@@ -36,8 +55,10 @@ export const App = () => {
                 return (
                   <div key={data.id} className="category-column">
                     <span>{data.text}</span>
-                    <span>{data.status}</span>
-                    <button onClick={() => handleDeleteProduct(data.id)}>remove</button>
+                    {/* <span>{data.status}</span> */}
+                    <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
+                    <button onClick={() => handleUpdateProduct(data.id)}>Atualizar</button>
+
                   </div>
                 )
               } else {
@@ -53,8 +74,9 @@ export const App = () => {
                 return (
                   <div key={data.id} className="category-column">
                     <span>{data.text}</span>
-                    <span>{data.status}</span>
-                    <button onClick={() => handleDeleteProduct(data.id)}>remove</button>
+                    {/* <span>{data.status}</span> */}
+                    <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
+                    <button onClick={() => handleUpdateProduct(data.id)}>Atualizar</button>
                   </div>
                 )
               } else {
