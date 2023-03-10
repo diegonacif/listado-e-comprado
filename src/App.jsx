@@ -1,9 +1,10 @@
 import { useState } from 'react';
 import { v4 as uuidv4 } from 'uuid';
+import { useLocalStorage } from './hooks/useLocalStorage';
 import './css/App.scss';
 
 export const App = () => {
-  const [data, setData] = useState([]);
+  const [data, setData] = useLocalStorage('listadoecomprado', []);
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('Comprar');
 
@@ -13,8 +14,10 @@ export const App = () => {
     setStatus('Comprar');
   }
 
-  // console.log(data);
-
+  function handleDeleteProduct(id) {
+    const newData = data.filter(item => item.id !== id);
+    setData(newData);
+  }
   return (
     <div className="App">
       <header>
@@ -28,12 +31,13 @@ export const App = () => {
       <section>
         <div className="category-wrapper">
           {
-            data.map((data) => {
+            data?.map((data) => {
               if(data.status === 'Comprar') {
                 return (
                   <div key={data.id} className="category-column">
                     <span>{data.text}</span>
                     <span>{data.status}</span>
+                    <button onClick={() => handleDeleteProduct(data.id)}>remove</button>
                   </div>
                 )
               } else {
@@ -44,12 +48,13 @@ export const App = () => {
         </div>
         <div className="category-wrapper">
           {
-            data.map((data) => {
+            data?.map((data) => {
               if(data.status === 'Comprado') {
                 return (
                   <div key={data.id} className="category-column">
                     <span>{data.text}</span>
                     <span>{data.status}</span>
+                    <button onClick={() => handleDeleteProduct(data.id)}>remove</button>
                   </div>
                 )
               } else {
