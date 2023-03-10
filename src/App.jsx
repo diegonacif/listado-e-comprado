@@ -13,16 +13,18 @@ export const App = () => {
     setStatus('Comprar');
   }
 
-  console.log(data);
+  // console.log(data);
 
   return (
     <div className="App">
-      <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
-      <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
-        <option value="Comprar">Comprar</option>
-        <option value="Comprado">Comprado</option>
-      </select>
-      <button onClick={() => handleAddProduct()}>Adicionar</button>
+      <header>
+        <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+        <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
+          <option value="Comprar">Comprar</option>
+          <option value="Comprado">Comprado</option>
+        </select>
+        <button onClick={() => handleAddProduct()}>Adicionar</button>
+      </header>
       <section>
         <div className="category-wrapper">
           {
