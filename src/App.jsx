@@ -7,13 +7,8 @@ export const App = () => {
   const [data, setData] = useLocalStorage('listadoecomprado', []);
   const [input, setInput] = useState('');
   const [status, setStatus] = useState('Comprar');
-  const [updateMode, setUpdateMode] = useState(true);
-  const [updateData, setUpdateData] = useState([]);
-  const [updateInput, setUpdateInput] = useState('');
-  const [updateStatus, setUpdateStatus] = useState('');
-  console.log(updateData[0]?.text);
-
-  // console.log(updateInput, updateStatus);
+  const [updateMode, setUpdateMode] = useState(false);
+  const [currentId, setCurrentId] = useState('');
 
   function handleAddProduct() {
     setData(current => [...current, { text: input, status: status, id: uuidv4() }]);
@@ -26,28 +21,40 @@ export const App = () => {
     setData(newData);
   }
 
-  function handleUpdateProduct(id) {
-    // {!updateMode && setUpdateMode(true)};
-    const newData = data?.filter(item => item.id === id);
-    setUpdateData(newData)
-    
+  function handleLoadUpdateProduct(id) {
+    setUpdateMode(true);
+    const currentItem = data?.filter(item => item.id === id);
+    setInput(currentItem[0]?.text);
+    setStatus(currentItem[0]?.status);
+    setCurrentId(currentItem[0]?.id);
   }
+
+  function handleUpdateProduct() {
+    const arrayWithoutItem = data.filter(item => item.id !== currentId);
+    const newItem = { text: input, status: status, id: currentId }
+    setData(arrayWithoutItem.concat(newItem));
+    setInput('');
+    setStatus('Comprar');
+    setCurrentId('');
+    setUpdateMode(false);
+  }
+
   return (
     <div className="App">
       <header>
         {
           updateMode ?
           <>
-            <input type="text" value={updateData[0]?.text} onChange={(e) => setInput(e.target.value)} />
-            <select name="status" id="status" value={updateData[0]?.status} onChange={(e) => setStatus(e.target.value)}>
+            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+            <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
               <option value="Comprar">Comprar</option>
               <option value="Comprado">Comprado</option>
             </select>
-            <button onClick={() => handleAddProduct()}>Atualizar</button>
+            <button onClick={() => handleUpdateProduct()}>Atualizar</button>
           </> :
           <>
-            <input type="text" value={updateData[0]?.text} onChange={(e) => setUpdateInput(e.target.value)} />
-            <select name="status" id="status" value={updateData[0]?.status} onChange={(e) => setUpdateStatus(e.target.value)}>
+            <input type="text" value={input} onChange={(e) => setInput(e.target.value)} />
+            <select name="status" id="status" value={status} onChange={(e) => setStatus(e.target.value)}>
               <option value="Comprar">Comprar</option>
               <option value="Comprado">Comprado</option>
             </select>
@@ -63,9 +70,8 @@ export const App = () => {
                 return (
                   <div key={data.id} className="category-column">
                     <span>{data.text}</span>
-                    {/* <span>{data.status}</span> */}
                     <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
-                    <button onClick={() => handleUpdateProduct(data.id)}>Atualizar</button>
+                    <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button>
 
                   </div>
                 )
@@ -84,7 +90,7 @@ export const App = () => {
                     <span>{data.text}</span>
                     {/* <span>{data.status}</span> */}
                     <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
-                    <button onClick={() => handleUpdateProduct(data.id)}>Atualizar</button>
+                    <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button>
                   </div>
                 )
               } else {
