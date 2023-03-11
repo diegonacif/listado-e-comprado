@@ -1,6 +1,7 @@
 import { useState } from 'react';
 import { useLocalStorage } from './hooks/useLocalStorage';
 import { v4 as uuidv4 } from 'uuid';
+import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import './css/App.scss';
 
 export const App = () => {
@@ -39,6 +40,14 @@ export const App = () => {
     setUpdateMode(false);
   }
 
+  function handleOnDragEndToBuy(result) {
+    if(!result.destination) return;
+    const items = Array.from(data);
+    const [reorderedItem] = items.splice(result.source.index, 1);
+    items.splice(result.destination.index, 0, reorderedItem);
+    setData(items)
+  }
+
   return (
     <div className="App">
       <header>
@@ -63,42 +72,63 @@ export const App = () => {
         }
       </header>
       <section>
-        <div className="category-wrapper">
-          {
-            data?.map((data) => {
-              if(data.status === 'Comprar') {
-                return (
-                  <div key={data.id} className="category-column">
-                    <span>{data.text}</span>
-                    <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
-                    <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button>
-
-                  </div>
-                )
-              } else {
-                return;
-              }
-            })
-          }
-        </div>
-        <div className="category-wrapper">
-          {
-            data?.map((data) => {
-              if(data.status === 'Comprado') {
-                return (
-                  <div key={data.id} className="category-column">
-                    <span>{data.text}</span>
-                    {/* <span>{data.status}</span> */}
-                    <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
-                    <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button>
-                  </div>
-                )
-              } else {
-                return;
-              }
-            })
-          }
-        </div>
+        <DragDropContext onDragEnd={handleOnDragEndToBuy}>
+          <Droppable droppableId="todo-droppable">
+            {(provided) => (
+              <div 
+                className="category-wrapper" 
+                {...provided.droppableProps} 
+                ref={provided.innerRef}
+              >
+                {
+                  data?.map((data, index) => {
+                    if(data.status === 'Comprar') {
+                      return (
+                        <Draggable key={`div-${data.id}`} draggableId={`div-${data.id}`} index={index}>
+                          {(provided) => (
+                            <div 
+                              className="category-column"
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              ref={provided.innerRef}
+                            >
+                              <span>{data.text}</span>
+                              <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
+                              <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button>
+                            </div>
+                          )}
+                        </Draggable>
+                      )
+                    } else {
+                      return;
+                    }
+                  })
+                }
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
+        </DragDropContext>
+        <DragDropContext>
+          <div className="category-wrapper">
+            {
+              data?.map((data) => {
+                if(data.status === 'Comprado') {
+                  return (
+                    <div key={data.id} className="category-column">
+                      <span>{data.text}</span>
+                      {/* <span>{data.status}</span> */}
+                      <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
+                      <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button>
+                    </div>
+                  )
+                } else {
+                  return;
+                }
+              })
+            }
+          </div>
+        </DragDropContext>
       </section>
     </div>
   )
