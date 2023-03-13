@@ -56,6 +56,7 @@ export const App = () => {
 
   return (
     <div className="App">
+      <div className="background-mirror"></div>
       <header>
         {
           updateMode ?

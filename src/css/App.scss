@@ -5,15 +5,30 @@
 }
 
 .App {
+  position: relative;
   display: flex;
   flex-direction: column;
   padding: 1rem;
-  background-color: #1f1f1f;
+  // background-color: #1f1f1f;
+  background: url('../assets/market-background.png');
+  background-size: cover;
+  background-repeat: no-repeat;
   width: 100%;
   min-height: 100vh;
 
+  .background-mirror {
+    position: absolute;
+    top: 0;
+    left: 0;
+    height: 100vh;
+    width: 100vw;
+    background-color:rgba(0, 0, 0, 0.88);
+    z-index: 1;
+  }
+
   header {
     display: flex;
+    z-index: 2;
   }
 
   section {
@@ -22,9 +37,10 @@
     width: 100%;
     margin-top: 3rem;
     gap: 1rem;
+    z-index: 2;
 
     .category-wrapper {
-      background-color: rgb(71, 71, 134);
+      background-color: rgba(133, 133, 133, 0.685);
       border-radius: 12px;
       width: 100%;
       height: fit-content;
