@@ -40,11 +40,17 @@ export const App = () => {
     setUpdateMode(false);
   }
 
-  function handleOnDragEndToBuy(result) {
+  function handleOnDragEnd(result) {
     if(!result.destination) return;
+
+    const { source, destination } = result;
+
     const items = Array.from(data);
     const [reorderedItem] = items.splice(result.source.index, 1);
     items.splice(result.destination.index, 0, reorderedItem);
+    if(source.droppableId !== destination.droppableId) {
+      reorderedItem.status = destination.droppableId === "todo-droppable" ? "Comprar" : "Comprado";
+    }
     setData(items)
   }
 
@@ -72,7 +78,7 @@ export const App = () => {
         }
       </header>
       <section>
-        <DragDropContext onDragEnd={handleOnDragEndToBuy}>
+        <DragDropContext onDragEnd={handleOnDragEnd}>
           <Droppable droppableId="todo-droppable">
             {(provided) => (
               <div 
@@ -85,12 +91,16 @@ export const App = () => {
                     if(data.status === 'Comprar') {
                       return (
                         <Draggable key={`div-${data.id}`} draggableId={`div-${data.id}`} index={index}>
-                          {(provided) => (
+                          {(provided, snapshot) => (
                             <div 
                               className="category-column"
                               {...provided.draggableProps}
                               {...provided.dragHandleProps}
                               ref={provided.innerRef}
+                              style={{
+                                ...provided.draggableProps.style,
+                                opacity: snapshot.isDragging ? '0.75' : '1'
+                              }}
                             >
                               <span>{data.text}</span>
                               <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
@@ -108,26 +118,46 @@ export const App = () => {
               </div>
             )}
           </Droppable>
-        </DragDropContext>
-        <DragDropContext>
-          <div className="category-wrapper">
-            {
-              data?.map((data) => {
-                if(data.status === 'Comprado') {
-                  return (
-                    <div key={data.id} className="category-column">
-                      <span>{data.text}</span>
-                      {/* <span>{data.status}</span> */}
-                      <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
-                      <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button>
-                    </div>
-                  )
-                } else {
-                  return;
+          <Droppable droppableId="done-droppable">
+            {(provided) => (
+              <div 
+                className="category-wrapper" 
+                {...provided.droppableProps} 
+                ref={provided.innerRef}
+              >
+                {
+                  data?.map((data, index) => {
+                    if(data.status === 'Comprado') {
+                      return (
+                        <Draggable key={`div-${data.id}`} draggableId={`div-${data.id}`} index={index}>
+                          {(provided, snapshot) => (
+                            <div 
+                              className="category-column"
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              ref={provided.innerRef}
+                              style={{
+                                ...provided.draggableProps.style,
+                                opacity: snapshot.isDragging ? '0.75' : '1'
+                              }}
+                            >
+                              <span>{data.text}</span>
+                              {/* <span>{data.status}</span> */}
+                              <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
+                              <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button>
+                            </div>
+                          )}
+                        </Draggable>
+                      )
+                    } else {
+                      return;
+                    }
+                  })
                 }
-              })
-            }
-          </div>
+                {provided.placeholder}
+              </div>
+            )}
+          </Droppable>
         </DragDropContext>
       </section>
     </div>

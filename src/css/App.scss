@@ -24,13 +24,13 @@
     gap: 1rem;
 
     .category-wrapper {
-      // background-color: white;
-      // border-radius: 12px;
+      background-color: rgb(71, 71, 134);
+      border-radius: 12px;
       width: 100%;
       height: fit-content;
       margin: 0 auto;
       overflow: hidden;
-      // padding: 0 1rem;
+      padding: 0.75rem;
 
       .category-column {
         display: flex;
