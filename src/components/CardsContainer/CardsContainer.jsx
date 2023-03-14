@@ -1,4 +1,5 @@
 
+import { NotePencil, Trash } from '@phosphor-icons/react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import '../../css/App.scss';
@@ -58,8 +59,12 @@ export const CardsContainer = ({ setUpdateMode, setInput, setStatus, data, setDa
                             }}
                           >
                             <span>{data.text}</span>
-                            <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
-                            <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button>
+                            {/* <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button> */}
+                            {/* <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button> */}
+                            <div className="action-buttons-wrapper">
+                              <NotePencil size={24} weight="duotone" onClick={() => handleLoadUpdateProduct(data.id)} />
+                              <Trash size={24} weight="duotone" onClick={() => handleDeleteProduct(data.id)} />
+                            </div>
                           </div>
                         )}
                       </Draggable>
@@ -98,8 +103,12 @@ export const CardsContainer = ({ setUpdateMode, setInput, setStatus, data, setDa
                           >
                             <span>{data.text}</span>
                             {/* <span>{data.status}</span> */}
-                            <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
-                            <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button>
+                            {/* <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
+                            <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button> */}
+                            <div className="action-buttons-wrapper">
+                              <NotePencil size={24} weight="duotone" onClick={() => handleLoadUpdateProduct(data.id)} />
+                              <Trash size={24} weight="duotone" onClick={() => handleDeleteProduct(data.id)} />
+                            </div>
                           </div>
                         )}
                       </Draggable>

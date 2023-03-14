@@ -16,16 +16,33 @@
     padding: 0.75rem;
 
     .category-column {
+      position: relative;
       display: flex;
+      align-items: center;
       width: 100%;
+      min-height: 3rem;
       gap: 1rem;
-      padding: 0.5rem 1rem;
+      padding: 0.5rem 4.5rem 0.5rem 1rem;
       border-radius: 12px;
       background-color: rgb(53, 53, 53);
       color: white;
 
       &:not(:first-child) {
         margin-top: 0.5rem;
+      }
+
+      .action-buttons-wrapper {
+        position: absolute;
+        right: 0.5rem;
+        top: 50%;
+        transform: translateY(-50%);
+        display: flex;
+        align-items: center;
+        gap: 0.75rem;
+
+        svg {
+          cursor: pointer;
+        }
       }
     }
   }
