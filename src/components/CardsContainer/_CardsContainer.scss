@@ -1,0 +1,32 @@
+.cards-container-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  width: 100%;
+  margin-top: 3rem;
+  gap: 1rem;
+  z-index: 2;
+
+  .category-wrapper {
+    background-color: rgba(133, 133, 133, 0.685);
+    border-radius: 12px;
+    width: 100%;
+    height: fit-content;
+    margin: 0 auto;
+    overflow: hidden;
+    padding: 0.75rem;
+
+    .category-column {
+      display: flex;
+      width: 100%;
+      gap: 1rem;
+      padding: 0.5rem 1rem;
+      border-radius: 12px;
+      background-color: rgb(53, 53, 53);
+      color: white;
+
+      &:not(:first-child) {
+        margin-top: 0.5rem;
+      }
+    }
+  }
+}
