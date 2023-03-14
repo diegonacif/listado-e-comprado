@@ -1,10 +1,31 @@
-
-import { NotePencil, Trash } from '@phosphor-icons/react';
+import { useState } from 'react';
+import { CheckSquare, NotePencil, PlusSquare, Trash, XSquare } from '@phosphor-icons/react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
+import { v4 as uuidv4 } from 'uuid';
 
 import '../../css/App.scss';
 
-export const CardsContainer = ({ setUpdateMode, setInput, setStatus, data, setData, setCurrentId }) => {
+export const CardsContainer = ({ setUpdateMode, input, setInput, setStatus, data, setData, setCurrentId }) => {
+
+  const [addMode, setAddMode] = useState("");
+
+  function handleAddMode(mode) {
+    setAddMode(mode);
+    setInput("");
+  }
+
+  function handleAddProduct(status) {
+    if(input === "") {
+        return setAddMode("");
+    } else {
+      return (
+        setData(current => [...current, { text: input, status: status, id: uuidv4() }]),
+        setInput(''),
+        setStatus('Comprar'),
+        setAddMode(false)
+      )
+    }
+  }
 
   function handleDeleteProduct(id) {
     const newData = data.filter(item => item.id !== id);
@@ -37,88 +58,122 @@ export const CardsContainer = ({ setUpdateMode, setInput, setStatus, data, setDa
       <DragDropContext onDragEnd={handleOnDragEnd}>
         <Droppable droppableId="todo-droppable">
           {(provided) => (
-            <div 
-              className="category-wrapper" 
-              {...provided.droppableProps} 
-              ref={provided.innerRef}
-            >
-              {
-                data?.map((data, index) => {
-                  if(data.status === 'Comprar') {
-                    return (
-                      <Draggable key={`div-${data.id}`} draggableId={`div-${data.id}`} index={index}>
-                        {(provided, snapshot) => (
-                          <div 
-                            className="category-column"
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            ref={provided.innerRef}
-                            style={{
-                              ...provided.draggableProps.style,
-                              opacity: snapshot.isDragging ? '0.75' : '1'
-                            }}
-                          >
-                            <span>{data.text}</span>
-                            {/* <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button> */}
-                            {/* <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button> */}
-                            <div className="action-buttons-wrapper">
-                              <NotePencil size={24} weight="duotone" onClick={() => handleLoadUpdateProduct(data.id)} />
-                              <Trash size={24} weight="duotone" onClick={() => handleDeleteProduct(data.id)} />
+            <div className="category-column">
+              <div 
+                className="category-wrapper" 
+                {...provided.droppableProps} 
+                ref={provided.innerRef}
+              >
+                {
+                  data?.map((data, index) => {
+                    if(data.status === 'Comprar') {
+                      return (
+                        <Draggable key={`div-${data.id}`} draggableId={`div-${data.id}`} index={index}>
+                          {(provided, snapshot) => (
+                            <div 
+                              className="category-item"
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              ref={provided.innerRef}
+                              style={{
+                                ...provided.draggableProps.style,
+                                opacity: snapshot.isDragging ? '0.75' : '1'
+                              }}
+                            >
+                              <span>{data.text}</span>
+                              {/* <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button> */}
+                              {/* <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button> */}
+                              <div className="action-buttons-wrapper">
+                                <NotePencil size={24} weight="duotone" onClick={() => handleLoadUpdateProduct(data.id)} />
+                                <Trash size={24} weight="duotone" onClick={() => handleDeleteProduct(data.id)} />
+                              </div>
                             </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    )
-                  } else {
-                    return;
-                  }
-                })
-              }
-              {provided.placeholder}
+                          )}
+                        </Draggable>
+                      )
+                    } else {
+                      return;
+                    }
+                  })
+                }
+                {
+                  addMode === "Comprar" ?
+                  <div className="category-item add-input">
+                    <input 
+                      type="text" 
+                      placeholder="Digite a tarefa aqui" 
+                      value={input} onChange={(e) => setInput(e.target.value)}
+                    />
+                    {
+                      input === "" ?
+                      <XSquare size={24} weight="duotone" onClick={() => handleAddProduct("Comprar")} /> :
+                      <CheckSquare size={24} weight="duotone" onClick={() => handleAddProduct("Comprar")} />
+                    }
+                  </div> :
+                  null
+                }
+                {provided.placeholder}
+              </div>
+              <PlusSquare size={36} weight="duotone" onClick={() => handleAddMode("Comprar")} />
             </div>
           )}
         </Droppable>
         <Droppable droppableId="done-droppable">
           {(provided) => (
-            <div 
-              className="category-wrapper" 
-              {...provided.droppableProps} 
-              ref={provided.innerRef}
-            >
-              {
-                data?.map((data, index) => {
-                  if(data.status === 'Comprado') {
-                    return (
-                      <Draggable key={`div-${data.id}`} draggableId={`div-${data.id}`} index={index}>
-                        {(provided, snapshot) => (
-                          <div 
-                            className="category-column"
-                            {...provided.draggableProps}
-                            {...provided.dragHandleProps}
-                            ref={provided.innerRef}
-                            style={{
-                              ...provided.draggableProps.style,
-                              opacity: snapshot.isDragging ? '0.75' : '1'
-                            }}
-                          >
-                            <span>{data.text}</span>
-                            {/* <span>{data.status}</span> */}
-                            {/* <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
-                            <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button> */}
-                            <div className="action-buttons-wrapper">
-                              <NotePencil size={24} weight="duotone" onClick={() => handleLoadUpdateProduct(data.id)} />
-                              <Trash size={24} weight="duotone" onClick={() => handleDeleteProduct(data.id)} />
+            <div className="category-column">
+              <div 
+                className="category-wrapper" 
+                {...provided.droppableProps} 
+                ref={provided.innerRef}
+              >
+                {
+                  data?.map((data, index) => {
+                    if(data.status === 'Comprado') {
+                      return (
+                        <Draggable key={`div-${data.id}`} draggableId={`div-${data.id}`} index={index}>
+                          {(provided, snapshot) => (
+                            <div 
+                              className="category-item"
+                              {...provided.draggableProps}
+                              {...provided.dragHandleProps}
+                              ref={provided.innerRef}
+                              style={{
+                                ...provided.draggableProps.style,
+                                opacity: snapshot.isDragging ? '0.75' : '1'
+                              }}
+                            >
+                              <span>{data.text}</span>
+                              {/* <span>{data.status}</span> */}
+                              {/* <button onClick={() => handleDeleteProduct(data.id)}>Deletar</button>
+                              <button onClick={() => handleLoadUpdateProduct(data.id)}>Atualizar</button> */}
+                              <div className="action-buttons-wrapper">
+                                <NotePencil size={24} weight="duotone" onClick={() => handleLoadUpdateProduct(data.id)} />
+                                <Trash size={24} weight="duotone" onClick={() => handleDeleteProduct(data.id)} />
+                              </div>
                             </div>
-                          </div>
-                        )}
-                      </Draggable>
-                    )
-                  } else {
-                    return;
-                  }
-                })
-              }
-              {provided.placeholder}
+                          )}
+                        </Draggable>
+                      )
+                    } else {
+                      return;
+                    }
+                  })
+                }
+                {
+                  addMode === "Comprado" ?
+                  <div className="category-item add-input">
+                    <input 
+                      type="text" 
+                      placeholder="Digite a tarefa aqui" 
+                      value={input} onChange={(e) => setInput(e.target.value)}
+                    />
+                    <CheckSquare size={24} weight="duotone" onClick={() => handleAddProduct("Comprado")} />
+                  </div> :
+                  null
+                }
+                {provided.placeholder}
+              </div>
+              <PlusSquare size={36} weight="duotone" onClick={() => handleAddMode("Comprado")} />
             </div>
           )}
         </Droppable>

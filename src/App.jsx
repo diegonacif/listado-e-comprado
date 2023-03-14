@@ -28,6 +28,7 @@ export const App = () => {
       />
       <CardsContainer 
         setUpdateMode={setUpdateMode}
+        input={input}
         setInput={setInput}
         setStatus={setStatus}
         data={data}
