@@ -1,21 +1,9 @@
-import { useState } from 'react';
-import { useLocalStorage } from '../../hooks/useLocalStorage';
-import { v4 as uuidv4 } from 'uuid';
+
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 
 import '../../css/App.scss';
 
-export const CardsContainer = () => {
-  const [data, setData] = useLocalStorage('listadoecomprado', []);
-  const [input, setInput] = useState('');
-  const [status, setStatus] = useState('Comprar');
-  const [currentId, setCurrentId] = useState('');
-
-  function handleAddProduct() {
-    setData(current => [...current, { text: input, status: status, id: uuidv4() }]);
-    setInput('');
-    setStatus('Comprar');
-  }
+export const CardsContainer = ({ setUpdateMode, setInput, setStatus, data, setData, setCurrentId }) => {
 
   function handleDeleteProduct(id) {
     const newData = data.filter(item => item.id !== id);
@@ -28,16 +16,6 @@ export const CardsContainer = () => {
     setInput(currentItem[0]?.text);
     setStatus(currentItem[0]?.status);
     setCurrentId(currentItem[0]?.id);
-  }
-
-  function handleUpdateProduct() {
-    const arrayWithoutItem = data.filter(item => item.id !== currentId);
-    const newItem = { text: input, status: status, id: currentId }
-    setData(arrayWithoutItem.concat(newItem));
-    setInput('');
-    setStatus('Comprar');
-    setCurrentId('');
-    setUpdateMode(false);
   }
 
   function handleOnDragEnd(result) {

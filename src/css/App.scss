@@ -25,13 +25,7 @@
     background-color:rgba(0, 0, 0, 0.88);
     z-index: 1;
   }
-
-  header {
-    display: flex;
-    z-index: 2;
-  }
-
-  
 }
 
 @import "../components/CardsContainer/CardsContainer";
+@import "../components/UpdateProduct/UpdateProduct";
