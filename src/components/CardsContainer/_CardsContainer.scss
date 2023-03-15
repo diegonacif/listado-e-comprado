@@ -7,7 +7,8 @@
     display: grid;
     grid-template-columns: 1fr 1fr;
     width: 100%;
-    margin-top: 3rem;
+    max-width: 50rem;
+    margin: 3rem auto 0;
     gap: 1rem;
     z-index: 2;
   
@@ -35,7 +36,7 @@
           width: 100%;
           min-height: 3rem;
           gap: 1rem;
-          padding: 0.5rem 5rem 0.5rem 1rem;
+          padding: 0.5rem 2.5rem 0.5rem 1rem;
           border-radius: 12px;
           background-color: rgb(53, 53, 53);
           color: white;
@@ -62,6 +63,14 @@
               color: inherit;
             }
           }
+        }
+
+        .category-title {
+          background-color: rgb(36, 35, 35);
+          font-weight: 600;
+          justify-content: center;
+          margin-bottom: 1rem;
+          padding: 0.5rem 1rem;
         }
   
         .add-input {

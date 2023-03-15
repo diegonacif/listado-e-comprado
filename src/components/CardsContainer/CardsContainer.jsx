@@ -98,6 +98,7 @@ export const CardsContainer = () => {
                   {...provided.droppableProps} 
                   ref={provided.innerRef}
                 >
+                  <div className="category-item category-title">Comprar</div>
                   {
                     data?.map((data, index) => {
                       if(data.status === 'Comprar') {
@@ -153,11 +154,13 @@ export const CardsContainer = () => {
           <Droppable droppableId="done-droppable">
             {(provided) => (
               <div className="category-column">
+
                 <div 
                   className="category-wrapper" 
                   {...provided.droppableProps} 
                   ref={provided.innerRef}
                 >
+                  <div className="category-item category-title">Comprado</div>
                   {
                     data?.map((data, index) => {
                       if(data.status === 'Comprado') {
