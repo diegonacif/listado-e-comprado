@@ -1,3 +1,4 @@
+import { CheckSquare } from '@phosphor-icons/react';
 import { v4 as uuidv4 } from 'uuid';
 
 export const UpdateProduct = ({ updateMode, setUpdateMode, input, setInput, status, setStatus, data, setData, currentId, setCurrentId, setEditTaskShow }) => {
@@ -27,8 +28,8 @@ export const UpdateProduct = ({ updateMode, setUpdateMode, input, setInput, stat
         <option value="Comprar">Comprar</option>
         <option value="Comprado">Comprado</option>
       </select>
-      <button onClick={() => handleUpdateProduct()}>Atualizar</button>
-      
+      {/* <button onClick={() => handleUpdateProduct()}>Atualizar</button> */}
+      <CheckSquare size={36} weight="fill" onClick={() => handleUpdateProduct()} />
     </div>
   )
 }

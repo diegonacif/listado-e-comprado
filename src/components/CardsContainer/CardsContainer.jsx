@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { CheckSquare, NotePencil, PlusSquare, Trash, XSquare } from '@phosphor-icons/react';
+import { CheckSquare, Minus, MinusSquare, NotePencil, PlusSquare, Trash, XSquare } from '@phosphor-icons/react';
 import { DragDropContext, Droppable, Draggable } from 'react-beautiful-dnd';
 import { v4 as uuidv4 } from 'uuid';
 import Rodal from 'rodal';
@@ -118,7 +118,7 @@ export const CardsContainer = () => {
                                 <span onClick={() => handleOpenEditTask(data.id)}>{data.text}</span>
                                 <div className="action-buttons-wrapper">
                                   {/* <NotePencil size={24} weight="duotone" onClick={() => handleLoadUpdateProduct(data.id)} /> */}
-                                  <Trash size={24} weight="duotone" onClick={() => handleDeleteProduct(data.id)} />
+                                  <MinusSquare size={24} weight="regular" onClick={() => handleDeleteProduct(data.id)} />
                                 </div>
                               </div>
                             )}
@@ -180,7 +180,7 @@ export const CardsContainer = () => {
                                 <span onClick={() => handleOpenEditTask(data.id)}>{data.text}</span>
                                 <div className="action-buttons-wrapper">
                                   {/* <NotePencil size={24} weight="duotone" onClick={() => handleLoadUpdateProduct(data.id)} /> */}
-                                  <Trash size={24} weight="duotone" onClick={() => handleDeleteProduct(data.id)} />
+                                  <MinusSquare size={24} weight="duotone" onClick={() => handleDeleteProduct(data.id)} />
                                 </div>
                               </div>
                             )}
@@ -223,6 +223,7 @@ export const CardsContainer = () => {
         animation='zoom'
         closeOnEsc={true}
         customStyles={modalCustomStyles}
+        showCloseButton={false}
       >
         <UpdateProduct 
           updateMode={updateMode}
