@@ -179,8 +179,7 @@ export const CardsContainer = () => {
                               >
                                 <span onClick={() => handleOpenEditTask(data.id)}>{data.text}</span>
                                 <div className="action-buttons-wrapper">
-                                  {/* <NotePencil size={24} weight="duotone" onClick={() => handleLoadUpdateProduct(data.id)} /> */}
-                                  <MinusSquare size={24} weight="duotone" onClick={() => handleDeleteProduct(data.id)} />
+                                  <MinusSquare size={24} weight="regular" onClick={() => handleDeleteProduct(data.id)} />
                                 </div>
                               </div>
                             )}
@@ -209,7 +208,7 @@ export const CardsContainer = () => {
                   }
                   {provided.placeholder}
                 </div>
-                <PlusSquare size={36} weight="duotone" onClick={() => handleAddMode("Comprado")} />
+                <PlusSquare size={36} weight="regular" onClick={() => handleAddMode("Comprado")} />
               </div>
             )}
           </Droppable>
